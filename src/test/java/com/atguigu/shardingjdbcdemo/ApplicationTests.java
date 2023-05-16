@@ -17,6 +17,32 @@ public class ApplicationTests {
     @Autowired
     private CourseMapper courseMapper;
 
+
+    //=================测试水平分库=========================
+
+    //新增操作
+    @Test
+    public void addCourseDb(){
+        for (int i = 0; i <= 10; i++) {
+            Course course = new Course();
+            course.setCname("java"+i);
+            course.setUserId(100L+i);
+            course.setCstatus("Normal"+i);
+            courseMapper.insert(course);
+        }
+    }
+
+    //查询操作
+    @Test
+    public void findCourseDb(){
+        QueryWrapper<Course> wrapper = new QueryWrapper<>();
+        wrapper.eq("cid",865266836072038400L);
+        wrapper.eq("user_id",101L);
+        Course course = courseMapper.selectOne(wrapper);
+        System.out.println("查询出的课程为："+course);
+    }
+
+    //=================测试水平分表=========================
     //添加课程的方法
     @Test
     public void addCourse() {
