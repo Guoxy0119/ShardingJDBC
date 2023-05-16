@@ -1,0 +1,7 @@
+# shardingjdbc分片策略
+#spring:
+#  shardingsphere:
+#    datasource:
+#      names: m1
+#      m1:
+#        type:
