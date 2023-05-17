@@ -1,7 +1,9 @@
 package com.atguigu.shardingjdbcdemo;
 
 import com.atguigu.shardingjdbcdemo.entity.Course;
+import com.atguigu.shardingjdbcdemo.entity.User;
 import com.atguigu.shardingjdbcdemo.mapper.CourseMapper;
+import com.atguigu.shardingjdbcdemo.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -16,7 +18,28 @@ public class ApplicationTests {
     //注入mapper
     @Autowired
     private CourseMapper courseMapper;
+    @Autowired
+    private UserMapper userMapper;
 
+    //================测试垂直分库========================
+
+    //新增操作
+    @Test
+    public void addUserDb() {
+        User user = new User();
+        user.setUsername("lucy");
+        user.setUstatus("a");
+        userMapper.insert(user);
+    }
+
+    //查询操作
+    @Test
+    public void findUserDb(){
+        QueryWrapper<User> wrapper = new QueryWrapper<>();
+        wrapper.eq("user_id",865282859332534273L);
+        User user = userMapper.selectOne(wrapper);
+        System.out.println("查询出的用户为："+user);
+    }
 
     //=================测试水平分库=========================
 
