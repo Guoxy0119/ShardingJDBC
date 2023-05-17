@@ -1,8 +1,10 @@
 package com.atguigu.shardingjdbcdemo;
 
 import com.atguigu.shardingjdbcdemo.entity.Course;
+import com.atguigu.shardingjdbcdemo.entity.Udict;
 import com.atguigu.shardingjdbcdemo.entity.User;
 import com.atguigu.shardingjdbcdemo.mapper.CourseMapper;
+import com.atguigu.shardingjdbcdemo.mapper.UdictMapper;
 import com.atguigu.shardingjdbcdemo.mapper.UserMapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.junit.Test;
@@ -20,6 +22,29 @@ public class ApplicationTests {
     private CourseMapper courseMapper;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UdictMapper udictMapper;
+
+    //================测试公共表========================
+
+    //新增操作(多个库中的 这个表都会新增数据)
+    @Test
+    public void addDict() {
+        Udict udict = new Udict();
+        udict.setUstatus("a");
+        udict.setUvalue("已启用");
+        udictMapper.insert(udict);
+    }
+
+    //删除操作
+    @Test
+    public void deleteDict(){
+        QueryWrapper<Udict> wrapper = new QueryWrapper<>();
+        wrapper.eq("dictid",865531331897982977L);
+        udictMapper.delete(wrapper);
+    }
+
+
 
     //================测试垂直分库========================
 
