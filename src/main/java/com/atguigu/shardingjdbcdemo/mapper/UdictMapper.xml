@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.shardingjdbcdemo.mapper.UdictMapper">
+
+    <resultMap type="com.atguigu.shardingjdbcdemo.entity.Udict" id="StuMap">
+        <result property="dictid" column="dictid" jdbcType="INTEGER"/>
+        <result property="ustatus" column="ustatus" jdbcType="VARCHAR"/>
+        <result property="uvalue" column="uvalue" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StuMap">
+        select
+        dictid,ustatus,uvalue
+        from t_udict
+        where ID = #{id}
+    </select>
+
+      
+</mapper>

@@ -1,12 +1,11 @@
 package com.atguigu.shardingjdbcdemo.mapper;
 
 import com.atguigu.shardingjdbcdemo.entity.Udict;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
+import com.atguigu.shardingjdbcdemo.util.MyMapper;
 
-@Repository
-public interface UdictMapper extends BaseMapper<Udict> {
+public interface UdictMapper extends MyMapper<Udict> {
 
+    Udict queryById(String id);
 
 
 }

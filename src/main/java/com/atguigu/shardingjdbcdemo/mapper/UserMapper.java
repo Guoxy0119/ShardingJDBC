@@ -1,9 +1,8 @@
 package com.atguigu.shardingjdbcdemo.mapper;
 
 import com.atguigu.shardingjdbcdemo.entity.User;
-import com.baomidou.mybatisplus.core.mapper.BaseMapper;
-import org.springframework.stereotype.Repository;
+import com.atguigu.shardingjdbcdemo.util.MyMapper;
 
-@Repository
-public interface UserMapper extends BaseMapper<User> {
+public interface UserMapper extends MyMapper<User> {
+    User queryById(String id);
 }

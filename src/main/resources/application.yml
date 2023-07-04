@@ -1,7 +1,62 @@
-# shardingjdbc分片策略
-#spring:
-#  shardingsphere:
-#    datasource:
-#      names: m1
-#      m1:
-#        type:
+server:
+  port: 8886
+spring:
+  dynamicdatasource:
+    enabled: true
+    ds:
+      - key: db1
+        type: druid
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://${MYSQL_URL:localhost:3306/db1}?useUnicode=true&characterEncoding=utf8&serverTimezone=CTT&allowMultiQueries=true
+        username: ${MYSQL_USER:root}
+        password: ${MYSQL_PWD:root}
+        #最大连接数
+        maxActive: 50
+        #初始化连接数
+        initSize: 10
+        #最大等待时间
+        maxWait: 60000
+        #空闲保持
+        minIdle : 10
+        #检测连接是否有效
+        testOnBorrow: true
+        #是否关闭无效连接
+        removeAbandoned: true
+        #多长时间为无效时长
+        removeAbandonedTimeout: 120
+        #连接数大于minIdle且时间大于minEvictableIdleTimeMillis状态改成不激活
+        minEvictableIdleTimeMillis: 600000
+
+      - key: db4
+        type: druid
+        driverClassName: com.mysql.cj.jdbc.Driver
+        url: jdbc:mysql://${MYSQL_URL_HISTORY:localhost:3306/db2}?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
+        username: ${MYSQL_USER_HISTORY:root}
+        password: ${MYSQL_PWD_HISTORY:root}
+        #最大连接数
+        maxActive: 50
+        #初始化连接数
+        initSize: 10
+        #最大等待时间
+        maxWait: 60000
+        #空闲保持
+        minIdle: 10
+        #检测连接是否有效
+        testOnBorrow: true
+        #是否关闭无效连接
+        removeAbandoned: true
+        #多长时间为无效时长
+        removeAbandonedTimeout: 120
+        #连接数大于minIdle且时间大于minEvictableIdleTimeMillis状态改成不激活
+        minEvictableIdleTimeMillis: 600000
+
+mybatis:
+  type-aliases-package: com.atguigu.shardingjdbcdemo.entity
+  mapper-locations: classpath*:com/atguigu/shardingjdbcdemo/mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+  type-handlers-package: com.atguigu.shardingjdbcdemo.mapper
+mapper:
+  mappers: com.atguigu.shardingjdbcdemo.util.MyMapper
+  not-empty: false
+  identity: MYSQL
