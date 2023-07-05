@@ -12,7 +12,7 @@
         select
         user_id,`name`
         from t_user
-        where ID = #{id}
+        where user_id = #{id}
     </select>
 
       

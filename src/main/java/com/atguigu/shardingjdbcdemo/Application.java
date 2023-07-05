@@ -8,7 +8,7 @@ import org.springframework.context.annotation.ComponentScan;
 
 @SpringBootApplication
 @ComponentScan(nameGenerator = CustNameGenaritor.class)
-@MapperScan("com.atguigu.shardingjdbcdemo")
+@MapperScan("com.atguigu.shardingjdbcdemo.mapper")
 public class Application {
 
     public static void main(String[] args) {
