@@ -6,6 +6,10 @@ import javax.sql.DataSource;
 import java.util.Objects;
 
 /**
+ * Spring boot提供了AbstractRoutingDataSource 根据用户定义的规则选择当前的数据源，
+ * 这样我们可以在执行查询之前，设置使用的数据源。
+ * 实现可动态路由的数据源，在每次数据库查询操作前执行
+ * 抽象方法 determineCurrentLookupKey() 决定使用哪个数据源
  * @ClassName DynamicDatasource
  * @Description TODO
  * @Author YangJingBo

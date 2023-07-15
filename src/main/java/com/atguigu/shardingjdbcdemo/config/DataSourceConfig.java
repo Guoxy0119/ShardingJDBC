@@ -1,7 +1,11 @@
 package com.atguigu.shardingjdbcdemo.config;
 
 import lombok.Data;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.mybatis.spring.SqlSessionFactoryBean;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
@@ -30,6 +34,10 @@ public class DataSourceConfig implements InitializingBean {
 
     private Map<String, DynamicDatasourceProperty> dsMap;
 
+    /**
+     * 在spring的bean的生命周期中，实例化->生成对象->属性填充后会进行afterPropertiesSet方法，这个方法可以用在一些特殊情况中，
+     * 也就是某个对象的某个属性需要经过外界得到，比如说查询数据库等方式，这时候可以用到spring的该特性，只需要实现InitializingBean即可
+     */
     @Override
     public void afterPropertiesSet() throws Exception {
         dsMap = ds.stream().collect(Collectors.toConcurrentMap(DynamicDatasourceProperty::getKey, x -> x));
@@ -51,25 +59,26 @@ public class DataSourceConfig implements InitializingBean {
     public org.apache.ibatis.session.Configuration mybatisConfiguration() {
         return new org.apache.ibatis.session.Configuration();
     }
-//    @Bean("SqlSessionFactory")
-//    public SqlSessionFactory db1SqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
-//        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
-//        bean.setDataSource(dataSource);
-//        // mapper的xml形式文件位置必须要配置，不然将报错：no statement （这种错误也可能是mapper的xml中，namespace与项目的路径不一致导致）
-////        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:com/goocidata/supplyx/supplyxlowcode/mapper/**/*.xml"));
-//        // 手动设置配置,mybatis会自动根据StringJSONTypeHandler进行类型转换，改为这种方式需手动添加
-//        org.apache.ibatis.session.Configuration configuration = mybatisConfiguration();
+
+    @Bean("SqlSessionFactory")
+    public SqlSessionFactory db1SqlSessionFactory(@Qualifier("dataSource") DataSource dataSource) throws Exception {
+        SqlSessionFactoryBean bean = new SqlSessionFactoryBean();
+        bean.setDataSource(dataSource);
+        // mapper的xml形式文件位置必须要配置，不然将报错：no statement （这种错误也可能是mapper的xml中，namespace与项目的路径不一致导致）
+//        bean.setMapperLocations(new PathMatchingResourcePatternResolver().getResources("classpath*:com/goocidata/supplyx/supplyxlowcode/mapper/**/*.xml"));
+        // 手动设置配置,mybatis会自动根据StringJSONTypeHandler进行类型转换，改为这种方式需手动添加
+        org.apache.ibatis.session.Configuration configuration = mybatisConfiguration();
 //        configuration.getTypeHandlerRegistry().register(StringJSONTypeHandler.class);
 //        configuration.getTypeHandlerRegistry().register(StringListTypeHandler.class);
-//        //可能多数据源导致转换驼峰不生效
-//        configuration.setMapUnderscoreToCamelCase(true);
-//        bean.setConfiguration(configuration);
-//        return bean.getObject();
-//    }
-//    @Bean("dbSqlSessionTemplate")
-//    public SqlSessionTemplate db1SqlSessionTemplate(@Qualifier("SqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
-//        return new SqlSessionTemplate(sqlSessionFactory);
-//    }
+        //可能多数据源导致转换驼峰不生效
+        configuration.setMapUnderscoreToCamelCase(true);
+        bean.setConfiguration(configuration);
+        return bean.getObject();
+    }
+    @Bean("dbSqlSessionTemplate")
+    public SqlSessionTemplate db1SqlSessionTemplate(@Qualifier("SqlSessionFactory") SqlSessionFactory sqlSessionFactory) {
+        return new SqlSessionTemplate(sqlSessionFactory);
+    }
 
 
 }
