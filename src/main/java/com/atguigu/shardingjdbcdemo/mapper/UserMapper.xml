@@ -1,19 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.atguigu.shardingjdbcdemo.mapper.UserMapper">
-
     <resultMap type="com.atguigu.shardingjdbcdemo.entity.User" id="StuMap">
         <result property="userId" column="user_id" jdbcType="INTEGER"/>
         <result property="username" column="name" jdbcType="VARCHAR"/>
+        <result property="crtTime" column="crt_time" jdbcType="VARCHAR"/>
     </resultMap>
 
     <!--查询单个-->
     <select id="queryById" resultMap="StuMap">
-        select
-        user_id,`name`
+        select user_id,
+               `name`,
+               crt_time
         from t_user
         where user_id = #{id}
     </select>
 
-      
+    <select id="queryByIds" resultMap="StuMap">
+        select user_id,
+        `name`,
+        crt_time
+        from t_user
+        where user_id in
+        <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+
+    <select id="selectByOrder" resultMap="StuMap">
+        select user_id,
+               `name`,
+               crt_time
+        from t_user tu
+        left join t_order o on tu.user_id = o.buyerId
+        where o.buyerId = #{id}
+    </select>
 </mapper>

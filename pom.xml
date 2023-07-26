@@ -15,6 +15,12 @@
     <description>com.atguigu</description>
     <properties>
         <java.version>8</java.version>
+        <shardingsphere.version>5.2.1</shardingsphere.version>
+
+        <!--5.2 版本及以上会出现这个问题，因为需要的解析yaml文件的库版本不满足框架要求，pom文件中的 properties位置
+        调整yaml版本号即可（Springboot框架自带了这个框架，不需要重新引用）。-->
+        <snakeyaml.version>1.33</snakeyaml.version>
+
     </properties>
     <dependencies>
         <dependency>
@@ -59,11 +65,11 @@
             <artifactId>lombok</artifactId>
         </dependency>
 
-<!--        <dependency>-->
-<!--            <groupId>com.baomidou</groupId>-->
-<!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
-<!--            <version>3.0.5</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.baomidou</groupId>-->
+        <!--            <artifactId>mybatis-plus-boot-starter</artifactId>-->
+        <!--            <version>3.0.5</version>-->
+        <!--        </dependency>-->
 
         <!--mybatis-->
         <dependency>
@@ -85,12 +91,80 @@
             </exclusions>
         </dependency>
 
-        <!--shardingjdbc-->
+
+        <!--数据库中间件shardingsphere 4.x (4.1.0 and 4.1.1)-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>-->
+        <!--            <version>4.1.1</version>-->
+        <!--        </dependency>-->
+
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-jdbc-core</artifactId>-->
+        <!--            <version>4.1.1</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; 使用XA事务时，需要引入此模块 &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-transaction-xa-core</artifactId>-->
+        <!--            <version>4.1.1</version>-->
+        <!--        </dependency>-->
+
+        <!--        &lt;!&ndash; 使用BASE事务时，需要引入此模块 &ndash;&gt;-->
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>sharding-transaction-base-seata-at</artifactId>-->
+        <!--            <version>4.1.1</version>-->
+        <!--        </dependency>-->
+
+        <!--shardingjdbc   5.x-->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-jdbc-core-spring-boot-starter</artifactId>
+            <version>${shardingsphere.version}</version>
+        </dependency>
+        <!--        <dependency>-->
+        <!--            <groupId>org.apache.shardingsphere</groupId>-->
+        <!--            <artifactId>shardingsphere-jdbc-core</artifactId>-->
+        <!--            <version>${shardingsphere.version}</version>-->
+        <!--        </dependency>-->
+
+
+        <!-- 使用 XA 事务时，需要引入此模块 -->
+        <dependency>
+            <groupId>org.apache.shardingsphere</groupId>
+            <artifactId>shardingsphere-transaction-xa-core</artifactId>
+            <version>${shardingsphere.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.atomikos</groupId>
+                    <artifactId>transactions-jta</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.atomikos</groupId>
+            <artifactId>transactions-jta</artifactId>
+            <version>5.0.8</version>
+        </dependency>
+
+        <!-- 使用 XA 的 Narayana模式时，需要引入此模块 -->
 <!--        <dependency>-->
 <!--            <groupId>org.apache.shardingsphere</groupId>-->
-<!--            <artifactId>sharding-jdbc-spring-boot-starter</artifactId>-->
-<!--            <version>4.1.1</version>-->
+<!--            <artifactId>shardingsphere-transaction-xa-narayana</artifactId>-->
+<!--            <version>5.3.0</version>-->
 <!--        </dependency>-->
+
+        <!-- 使用 BASE 事务时，需要引入此模块 -->
+<!--        <dependency>-->
+<!--            <groupId>org.apache.shardingsphere</groupId>-->
+<!--            <artifactId>shardingsphere-transaction-base-seata-at</artifactId>-->
+<!--            <version>${shardingsphere.version}</version>-->
+<!--        </dependency>-->
+
 
         <dependency>
             <groupId>mysql</groupId>
@@ -117,6 +191,7 @@
                 <includes>
                     <include>application.yml</include>
                     <include>**/*.sh</include>
+                    <include>**/*.**</include>
                 </includes>
             </resource>
         </resources>

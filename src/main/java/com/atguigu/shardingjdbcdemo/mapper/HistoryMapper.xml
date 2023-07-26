@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.atguigu.shardingjdbcdemo.mapper.HistoryMapper">
+    <resultMap type="com.atguigu.shardingjdbcdemo.entity.History" id="StuMap">
+        <result property="id" column="id" jdbcType="INTEGER"/>
+        <result property="memo" column="memo" jdbcType="VARCHAR"/>
+        <result property="crtTime" column="crt_time" jdbcType="TIMESTAMP"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="StuMap">
+        select id,
+        `memo`,
+        crt_time
+        from t_history
+        where user_id = #{id}
+    </select>
+
+    <select id="queryByIds" resultMap="StuMap">
+        select id,
+        `memo`,
+        crt_time
+        from t_history
+        where ID in
+        <foreach collection="ids" index="index" item="id" open="(" separator="," close=")">
+            #{id,jdbcType=VARCHAR}
+        </foreach>
+    </select>
+
+    <select id="page" resultMap="StuMap">
+        select id,
+        `memo`,
+        crt_time
+        from t_history
+        where crt_time between #{data.startTime} and #{data.endTime}
+    </select>
+
+</mapper>

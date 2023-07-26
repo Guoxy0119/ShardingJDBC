@@ -1,6 +1,9 @@
 server:
   port: 8886
 spring:
+  jackson:
+    date-format: yyyy-MM-dd HH:mm:ss
+    time-zone: GMT+8
   dynamicdatasource:
     enabled: true
     ds:
@@ -27,10 +30,10 @@ spring:
         #连接数大于minIdle且时间大于minEvictableIdleTimeMillis状态改成不激活
         minEvictableIdleTimeMillis: 600000
 
-      - key: db4
+      - key: db0
         type: druid
         driverClassName: com.mysql.cj.jdbc.Driver
-        url: jdbc:mysql://${MYSQL_URL_HISTORY:localhost:3306/db2}?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
+        url: jdbc:mysql://${MYSQL_URL_HISTORY:localhost:3306/db0}?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=CTT&allowPublicKeyRetrieval=true
         username: ${MYSQL_USER_HISTORY:root}
         password: ${MYSQL_PWD_HISTORY:root}
         #最大连接数
